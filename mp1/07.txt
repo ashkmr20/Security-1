@@ -1,0 +1,25 @@
+asathis2 total : 80/100
+Testing md5_length_extension	15.0/15	
+1.2.1.2.txt *Passed*
+
+1.2.1.2.py *Passed*
+
+Testing md5_goodevil_collision	15.0/15	
+1.2.3 MD5 *Passed*
+
+1.2.3 Output *Passed*
+
+MD5 of good.py, evil.py: a76523e6c20aaefd69c5be45503c3196, a76523e6c20aaefd69c5be45503c3196
+
+Output of good.py: I come in peace.
+Output of evil.py: Prepare to be destroyed!
+
+Testing padding_oracle	25.0/25	
+1.2.3.txt *Passed*
+
+Testing ps_and_qs	25.0/25	
+1.2.4.txt *Passed*
+
+Testing certcollision	0/20	Malformed output from subgrader, stdout=
+stderr=['Traceback (most recent call last):', '  File "/home/bense0318/Workspace/fa17-cs461/_class/_private/fa17/mp1/grader/mp1/certcollision.py", line 40, in <module>', '    cb=load_cert(filepath2)', '  File "/home/bense0318/Workspace/fa17-cs461/_class/_private/fa17/mp1/grader/mp1/certcollision.py", line 20, in load_cert', '    cert=x509.load_der_x509_certificate(der_data, default_backend())', '  File "/usr/lib/python2.7/site-packages/cryptography/x509/base.py", line 47, in load_der_x509_certificate', '    return backend.load_der_x509_certificate(data)', '  File "/usr/lib/python2.7/site-packages/cryptography/hazmat/backends/openssl/backend.py", line 1140, in load_der_x509_certificate', '    raise ValueError("Unable to load certificate")', 'ValueError: Unable to load certificate', '']
+

